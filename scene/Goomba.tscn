@@ -1,0 +1,92 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://sprite/player/goomba-walking.png" type="Texture" id=1]
+[ext_resource path="res://script/Goomba.gd" type="Script" id=2]
+[ext_resource path="res://script/GoombaAreas.gd" type="Script" id=3]
+
+[sub_resource type="AtlasTexture" id=1]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 32, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 64, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 32, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 32, 32, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=6]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 64, 32, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=7]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 0, 64, 32, 32 )
+
+[sub_resource type="SpriteFrames" id=8]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ) ],
+"loop": true,
+"name": "walking",
+"speed": 9.0
+} ]
+
+[sub_resource type="CircleShape2D" id=9]
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 15.375, 6.625 )
+
+[sub_resource type="RectangleShape2D" id=11]
+extents = Vector2( 13, 6.75 )
+
+[node name="Goomba" type="KinematicBody2D"]
+script = ExtResource( 2 )
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 8 )
+animation = "walking"
+frame = 5
+
+[node name="HeadGoomba" type="Area2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="Shape" type="CollisionShape2D" parent="HeadGoomba"]
+position = Vector2( 0.125, -6.5 )
+shape = SubResource( 9 )
+
+[node name="BodyGoomba" type="Area2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="Shape" type="CollisionShape2D" parent="BodyGoomba"]
+position = Vector2( 0, 2 )
+shape = SubResource( 10 )
+
+[node name="FootShape" type="CollisionShape2D" parent="."]
+position = Vector2( -0.125, 8.75 )
+shape = SubResource( 11 )
+
+[node name="Visibility" type="VisibilityNotifier2D" parent="."]
+position = Vector2( 0.312501, -0.875 )
+scale = Vector2( 1.60625, 1.6625 )
+__meta__ = {
+"_edit_lock_": true
+}
+[connection signal="body_entered" from="HeadGoomba" to="HeadGoomba" method="_on_HeadGoomba_body_entered"]
+[connection signal="body_entered" from="BodyGoomba" to="BodyGoomba" method="_on_BodyGoomba_body_entered"]
+[connection signal="screen_exited" from="Visibility" to="." method="_on_Visibility_screen_exited"]
