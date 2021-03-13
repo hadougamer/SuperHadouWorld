@@ -4,7 +4,8 @@ var pre_player=preload("res://scene/Player.tscn")
 var pre_goomba=preload("res://scene/Goomba.tscn")
 
 var player
-var on_tube3 = false
+var on_tube3 = false # Player is over tube3
+var flag_up = true # the level flag is up
 
 func _ready():
 	#$Audio.play()
@@ -12,6 +13,9 @@ func _ready():
 	player = pre_player.instance()
 	player.global_position = $PlayerPos.global_position
 	player.z_index = 25
+
+	#debug player position
+	player.position.x = 5760
 
 	# Add Goombas to Stage (according to their positions)
 	var curGoomba = null
@@ -47,3 +51,14 @@ func _on_AreaTube03_body_entered(body):
 func _on_AreaTube03_body_exited(body):
 	if body.is_in_group("player"):
 		on_tube3=false
+
+# Flag Animation (when player touch)
+func _on_FlagArea_body_entered(body):
+	if body.is_in_group("player") and flag_up:
+		$"Flag/Animation".play("FlagDown")
+		flag_up = false
+
+# Flag Animation finished
+func _on_Animation_animation_finished():
+	print("Flag Animation Finished")
+	print("LEVEL CLEARED!")
